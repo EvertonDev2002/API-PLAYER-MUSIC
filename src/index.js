@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const morgan = require("morgan");
 const routes = require("./router/router");
-app.listen(3003, () => console.log("servidor rondando!"));
+app.listen(process.env.PORT || 3003, () => console.log("servidor rondando!"));
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
