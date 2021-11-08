@@ -1,6 +1,5 @@
 const sslRedirect = require("heroku-ssl-redirect");
 const routes = require("./router/router");
-const PORT = process.env.PORT || "8080";
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -27,5 +26,4 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.set("port", PORT);
-app.listen(PORT,() => console.log("servidor rondando!"));
+app.listen(process.env.PORT,() => console.log("servidor rondando!"));
