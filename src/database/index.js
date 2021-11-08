@@ -1,4 +1,7 @@
 const knexfile = require("../../knexfile");
-const knex = require("knex")(knexfile.production || knexfile.development);
+/* Production */
+const knex = require("knex")(knexfile.production);
+/* LocalHost */
+/* const knex = require("knex")(knexfile.development); */
 
 module.exports = knex;
