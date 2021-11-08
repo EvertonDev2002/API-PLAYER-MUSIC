@@ -1,5 +1,5 @@
 {
-  "name": "Projeto_Player_Music",
+  "name": "projeto.player.music",
   "version": "1.0.0",
   "main": "./src/index.js",
   "scripts": {
