@@ -1,6 +1,7 @@
-var http = require('https');
+const sslRedirect = require("heroku-ssl-redirect");
 const express = require("express");
 const app = express();
+app.use(sslRedirect());
 const cors = require("cors");
 const morgan = require("morgan");
 const routes = require("./router/router");
