@@ -1,4 +1,3 @@
-const sslRedirect = require("heroku-ssl-redirect");
 const routes = require("./router/router");
 const express = require("express");
 const morgan = require("morgan");
@@ -6,7 +5,6 @@ const cors = require("cors");
 const app = express();
 app.use(routes);
 app.use(cors());
-app.use(sslRedirect());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
