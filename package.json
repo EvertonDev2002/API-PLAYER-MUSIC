@@ -1,0 +1,23 @@
+{
+  "name": "Projeto_Player_Music",
+  "version": "1.0.0",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "nodemon ./src/index.js"
+  },
+  "repository": "git@github.com:EvertonDev2002/Exemplo-API-NodeJS-Projeto-Player-Music.git",
+  "author": "EvertonDev2002",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1",
+    "knex": "^0.95.13",
+    "morgan": "^1.10.0",
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}
