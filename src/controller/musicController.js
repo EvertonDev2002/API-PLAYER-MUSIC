@@ -123,7 +123,7 @@ module.exports = {
         .update({ title_song, lyrics, duration, file })
         .where({ id_song });
 
-      return res.send();
+      return res.status(200).send();
     } catch (error) {
       next(error);
     }
@@ -133,7 +133,7 @@ module.exports = {
       const { id_song } = req.params;
 
       await knex("tb_song").where({ id_song }).del();
-      return res.send();
+      return res.status(200).send();
     } catch (error) {
       next(error);
     }
