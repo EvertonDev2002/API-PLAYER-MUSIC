@@ -26,4 +26,12 @@ router
   .put("update/album:id_album", albumController.update)
   .delete("/delete/album:id_album", albumController.delete);
 
+/* Rotas Para Artist */
+  router
+  .get("/list/album", albumController.index)
+  .get("/title_album/album:title_album", albumController.search)
+  .post("/create/album", albumController.create)
+  .put("update/album:id_album", albumController.update)
+  .delete("/delete/album:id_album", albumController.delete);
+
 module.exports = router;
