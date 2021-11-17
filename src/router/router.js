@@ -27,11 +27,19 @@ router
   .delete("/delete/album:id_album", albumController.delete);
 
 /* Rotas Para Artist */
-  router
-  .get("/list/album", albumController.index)
-  .get("/title_album/album:title_album", albumController.search)
-  .post("/create/album", albumController.create)
-  .put("update/album:id_album", albumController.update)
-  .delete("/delete/album:id_album", albumController.delete);
+router
+  .get("/list/artist", albumController.index)
+  .get("/artist/artist:artist", albumController.search)
+  .post("/create/artist", albumController.create)
+  .put("update/artist:id_artist", albumController.update)
+  .delete("/delete/artist:id_artist", albumController.delete);
+
+/* Rotas Para Genre */
+router
+  .get("/list/genre", albumController.index)
+  .get("/genre/genre:genre", albumController.search)
+  .post("/create/genre", albumController.create)
+  .put("update/genre:id_genre", albumController.update)
+  .delete("/delete/genre:id_genre", albumController.delete);
 
 module.exports = router;
