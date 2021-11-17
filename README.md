@@ -1,5 +1,4 @@
-# API em Nodejs: exemplo para projeto escolar - Player Music
-
+# API em Nodejs: COMO USAR
 ---
 
 #### Rota para Song
