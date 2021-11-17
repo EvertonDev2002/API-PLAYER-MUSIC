@@ -81,7 +81,7 @@ Enviar requisição pelo método POST na seguinte rota.
 
 **Deletar Música**
 
-`
+
 `https://ex-player.herokuapp.com/delete/song:id_song`
 
 
@@ -146,14 +146,14 @@ JSON
 Enviar requisição pelo método POST na seguinte rota.
 
 
-`https://ex-player.herokuapp.com//create/song`
+`https://ex-player.herokuapp.com/create/album`
 
 
 **Deletar Música**
 
 
-`https://ex-player.herokuapp.com/delete/song:id_song`
+`https://ex-player.herokuapp.com/delete/album:id_album`
 
 
-Basta substituir o parâmetro `:id_song` para a chave primária (Id) da música que deseja deletar.
+Basta substituir o parâmetro `:id_album` para a chave primária (Id) da música que deseja deletar.
 
