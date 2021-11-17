@@ -106,7 +106,7 @@ Basta substituir o parâmetro `:id_song` para a chave primária (Id) da música 
 Basta substituir o parâmetro `:title_album` para o título do álbum que procura.
 
 
-**Adicionar música**
+**Adicionar Álbum**
 
 
 
@@ -120,25 +120,6 @@ JSON
 
 "albumcover":"Link Da Capa",
 
-
-"artist":"Nome Do Artista",
-
-
-"genre": "Gênero muscial",
-
-
-"lyrics": "Letra Da Música",
-
-
-"file": "Link da Música",
-
-
-"title_song": "Título da música",
-
-
-"duration": duração em segundos
-
-
 }
 
 
@@ -149,7 +130,7 @@ Enviar requisição pelo método POST na seguinte rota.
 `https://ex-player.herokuapp.com/create/album`
 
 
-**Deletar Música**
+**Deletar Álbum**
 
 
 `https://ex-player.herokuapp.com/delete/album:id_album`
