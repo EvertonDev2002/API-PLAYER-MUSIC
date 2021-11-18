@@ -76,24 +76,25 @@ module.exports = {
   },
   async search(req, res, next) {
     try {
-      const { genre } = req.params;
-      const { artist } = req.params;
-      const { title_album } = req.params;
+      const { genre, title_album, artist } = req.params;
 
       if (genre) {
+        const value = genre.toLowerCase();
         const results = await knex("tb_song")
           .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
-          .where({ genre });
+          .whereRaw(`LOWER(genre) LIKE ?`, [`%${value}%`]);
         return res.json(results);
       } else if (artist) {
+        const value = artist.toLowerCase();
         const results = await knex("tb_song")
           .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
-          .where({ artist });
+          .whereRaw(`LOWER(artist) LIKE ?`, [`%${value}%`]);
         return res.json(results);
       } else if (title_album) {
+        const value = title_album.toLowerCase();
         const results = await knex("tb_song")
           .join("tb_album", "tb_album.id_album", "tb_song.fk_album")
-          .where({ title_album });
+          .whereRaw(`LOWER(title_album) LIKE ?`, [`%${value}%`]);
         return res.json(results);
       }
     } catch (error) {
@@ -102,7 +103,29 @@ module.exports = {
   },
   async update(req, res, next) {
     try {
+      const { id_song } = req.params;
+
+      const { lyrics, file, title_song, duration } = req.body;
+
+      if (lyrics) {
+        await knex("tb_song").update({ lyrics }).where({ id_song });
+      } else if (file) {
+        await knex("tb_song").update({ file }).where({ id_song });
+      } else if (title_song) {
+        await knex("tb_song").update({ title_song }).where({ id_song });
+      } else if (duration) {
+        await knex("tb_song").update({ duration }).where({ id_song });
+      }
+
+      return res.status(200).send();
+    } catch (error) {
+      next(error);
+    }
+  },
+  async updateAll(req, res, next) {
+    try {
       const { id_song, id_artist, id_genre, id_album } = req.params;
+
       const {
         title_album,
         albumcover,
@@ -115,10 +138,13 @@ module.exports = {
       } = req.body;
 
       await knex("tb_genre").update({ genre }).where({ id_genre });
+
       await knex("tb_album")
         .update({ albumcover, title_album })
         .where({ id_album });
+
       await knex("tb_artist").update({ artist }).where({ id_artist });
+
       await knex("tb_song")
         .update({ title_song, lyrics, duration, file })
         .where({ id_song });

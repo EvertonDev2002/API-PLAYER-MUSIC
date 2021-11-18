@@ -12,7 +12,7 @@ module.exports = {
     try {
       const { title_album, albumcover } = req.body;
 
-      await knex("tb_song").insert({ title_album, albumcover });
+      await knex("tb_album").insert({ title_album, albumcover });
 
       return res.status(201).send();
     } catch (error) {
@@ -22,8 +22,12 @@ module.exports = {
   async search(req, res, next) {
     try {
       const { title_album } = req.params;
+      const value = title_album.toLowerCase();
 
-      const results = await knex("tb_album").where({ title_album });
+      const results = await knex("tb_album").whereRaw(
+        `LOWER(title_album) LIKE ?`,
+        [`%${value}%`]
+      );
       return res.json(results);
     } catch (error) {
       next(error);
@@ -32,6 +36,24 @@ module.exports = {
   async update(req, res, next) {
     try {
       const { id_album } = req.params;
+
+      const { title_album, albumcover } = req.body;
+
+      if (title_album) {
+        await knex("tb_album").update({ title_album }).where({ id_album });
+      } else if (albumcover) {
+        await knex("tb_album").update({ albumcover }).where({ id_album });
+      }
+
+      return res.status(200).send();
+    } catch (error) {
+      next(error);
+    }
+  },
+  async updateAll(req, res, next) {
+    try {
+      const { id_album } = req.params;
+
       const { title_album, albumcover } = req.body;
 
       await knex("tb_album")

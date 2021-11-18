@@ -2,44 +2,48 @@ const { Router } = require("express");
 const express = require("express");
 const router = express.Router();
 
-const musicController = require("../controller/musicController");
+const songController = require("../controller/songController");
 const albumController = require("../controller/albumController");
+const artistController = require("../controller/artistController");
+const genreController = require("../controller/genreController");
 
 /* Rotas Para Song */
 router
-  .get("/list/song", musicController.index)
-  .get("/genre/song:genre", musicController.search)
-  .get("/artist/song:artist", musicController.search)
-  .get("/title_album/song:title_album", musicController.search)
-  .post("/create/song", musicController.create)
+  .get("/list/song", songController.index)
+  .get("/genre/song/:genre", songController.search)
+  .get("/artist/song/:artist", songController.search)
+  .get("/title/album/song/:title_album", songController.search)
+  .post("/create/song", songController.create)
+  .put("/update/song/:id_song", songController.update)
   .put(
-    "/update/song:id_song/:id_album/:id_artist/:id_genre",
-    musicController.update
+    "/update/all/song/:id_song/:id_album/:id_artist/:id_genre",
+    songController.updateAll
   )
-  .delete("/delete/song:id_song", musicController.delete);
+  .delete("/delete/song/:id_song", songController.delete);
 
 /* Rotas Para Album */
 router
   .get("/list/album", albumController.index)
-  .get("/title_album/album:title_album", albumController.search)
+  .get("/title/album/:title_album", albumController.search)
   .post("/create/album", albumController.create)
-  .put("update/album:id_album", albumController.update)
-  .delete("/delete/album:id_album", albumController.delete);
+  .put("/update/album/:id_album", albumController.update)
+  .put("/update/all/album/:id_album", albumController.updateAll)
+  .delete("/delete/album/:id_album", albumController.delete);
 
 /* Rotas Para Artist */
 router
-  .get("/list/artist", albumController.index)
-  .get("/artist/artist:artist", albumController.search)
-  .post("/create/artist", albumController.create)
-  .put("update/artist:id_artist", albumController.update)
-  .delete("/delete/artist:id_artist", albumController.delete);
+  .get("/list/artist", artistController.index)
+  .get("/artist/artist/:artist", artistController.search)
+  .post("/create/artist", artistController.create)
+  .put("/update/artist/:id_artist", artistController.update)
+  .delete("/delete/artist/:id_artist", artistController.delete);
 
 /* Rotas Para Genre */
 router
-  .get("/list/genre", albumController.index)
-  .get("/genre/genre:genre", albumController.search)
-  .post("/create/genre", albumController.create)
-  .put("update/genre:id_genre", albumController.update)
-  .delete("/delete/genre:id_genre", albumController.delete);
+  .get("/list/genre", genreController.index)
+  .get("/genre/genre/:genre", genreController.search)
+  .post("/create/genre", genreController.create)
+  .put("/update/genre/:id_genre", genreController.update)
+  .delete("/delete/genre/:id_genre", genreController.delete);
 
 module.exports = router;
