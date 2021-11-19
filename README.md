@@ -1,7 +1,7 @@
 # API em Nodejs: COMO USAR
 ---
 
-Para iniciar projeto:
+### Para iniciar projeto
 
 
 yarn dev (para modo desenvolvedor)
@@ -207,7 +207,11 @@ JSON
 
 
 {
+
+
     "albumcover": "Digite O Link Da Capa"
+    
+    
 }
 
 
@@ -224,9 +228,11 @@ JSON
 
 
 {
+
+
     "albumcover": "Digite O Link Da Capa",
-
-
+    
+    
     "albumcover": "sasasa"  
 }
 
@@ -294,7 +300,11 @@ JSON
 
 
 {
+
+
     "artist": "Digite O Novo Nome"
+    
+    
 }
 
 
@@ -361,7 +371,11 @@ JSON
 
 
 {
+
+
     "genro": "Novo gênero"
+    
+    
 }
 
 
