@@ -19,6 +19,7 @@ module.exports = {
         "title_song",
         "duration"
       );
+
     return res.json(results);
   },
   async create(req, res, next) {
@@ -76,26 +77,108 @@ module.exports = {
   },
   async search(req, res, next) {
     try {
-      const { genre, title_album, artist } = req.params;
+      const { search } = req.params;
 
       if (genre) {
-        const value = genre.toLowerCase();
-        const results = await knex("tb_song")
+        let value = search.toLowerCase();
+        let results = await knex("tb_song")
           .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
-          .whereRaw(`LOWER(genre) LIKE ?`, [`%${value}%`]);
-        return res.json(results);
-      } else if (artist) {
-        const value = artist.toLowerCase();
-        const results = await knex("tb_song")
-          .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
-          .whereRaw(`LOWER(artist) LIKE ?`, [`%${value}%`]);
-        return res.json(results);
-      } else if (title_album) {
-        const value = title_album.toLowerCase();
-        const results = await knex("tb_song")
+          .whereRaw(`LOWER(genre) LIKE ?`, [`%${value}%`])
           .join("tb_album", "tb_album.id_album", "tb_song.fk_album")
-          .whereRaw(`LOWER(title_album) LIKE ?`, [`%${value}%`]);
-        return res.json(results);
+          .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
+          .select(
+            "id_song",
+            "fk_album",
+            "fk_artist",
+            "fk_genre",
+            "title_album",
+            "albumcover",
+            "artist",
+            "genre",
+            "lyrics",
+            "file",
+            "title_song",
+            "duration"
+          );
+
+        if (results.length != 0) {
+          return res.json(results);
+        } else {
+          value = search.toLowerCase();
+          results = await knex("tb_song")
+            .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
+            .whereRaw(`LOWER(artist) LIKE ?`, [`%${value}%`])
+            .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
+            .join("tb_album", "tb_album.id_album", "tb_song.fk_album")
+            .select(
+              "id_song",
+              "fk_album",
+              "fk_artist",
+              "fk_genre",
+              "title_album",
+              "albumcover",
+              "artist",
+              "genre",
+              "lyrics",
+              "file",
+              "title_song",
+              "duration"
+            );
+
+          if (results.length != 0) {
+            return res.json(results);
+          } else {
+            value = search.toLowerCase();
+            results = await knex("tb_song")
+              .join("tb_album", "tb_album.id_album", "tb_song.fk_album")
+              .whereRaw(`LOWER(title_album) LIKE ?`, [`%${value}%`])
+              .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
+              .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
+              .select(
+                "id_song",
+                "fk_album",
+                "fk_artist",
+                "fk_genre",
+                "title_album",
+                "albumcover",
+                "artist",
+                "genre",
+                "lyrics",
+                "file",
+                "title_song",
+                "duration"
+              );
+
+            if (results.length != 0) {
+              return res.json(results);
+            } else {
+              value = search.toLowerCase();
+              results = await knex("tb_song")
+                .whereRaw(`LOWER(title_song) LIKE ?`, [`%${value}%`])
+                .join("tb_album", "tb_album.id_album", "tb_song.fk_album")
+                .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
+                .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
+                .select(
+                  "id_song",
+                  "fk_album",
+                  "fk_artist",
+                  "fk_genre",
+                  "title_album",
+                  "albumcover",
+                  "artist",
+                  "genre",
+                  "lyrics",
+                  "file",
+                  "title_song",
+                  "duration"
+                );
+
+              if (results.length != 0) {
+                return res.json(results);
+              }
+            }
+          }
+        }
       }
     } catch (error) {
       next(error);

@@ -1,4 +1,3 @@
-const { Router } = require("express");
 const express = require("express");
 const router = express.Router();
 
@@ -10,9 +9,7 @@ const genreController = require("../controller/genreController");
 /* Rotas Para Song */
 router
   .get("/list/song", songController.index)
-  .get("/genre/song/:genre", songController.search)
-  .get("/artist/song/:artist", songController.search)
-  .get("/title/album/song/:title_album", songController.search)
+  .get("/search/song/:search", songController.search)
   .post("/create/song", songController.create)
   .put("/update/song/:id_song", songController.update)
   .put(
