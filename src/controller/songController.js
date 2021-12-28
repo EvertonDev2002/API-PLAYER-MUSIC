@@ -35,42 +35,78 @@ module.exports = {
         duration,
       } = req.body;
 
-      await knex("tb_album").insert({ title_album, albumcover });
+      const genreToLowerCase = genre.toLowerCase();
+      const artistToLowerCase = artist.toLowerCase();
+      const titleAlbumToLowerCase = title_album.toLowerCase();
 
-      const [{ id_album }] = await knex("tb_album")
+      const id_album = await knex("tb_album")
         .select("id_album")
+        .whereRaw(`LOWER(title_album) LIKE ?`, [`%${titleAlbumToLowerCase}%`])
         .orderBy("id_album", "desc")
         .limit(1);
 
-      await knex("tb_artist").insert({ artist });
-
-      const [{ id_artist }] = await knex("tb_artist")
+      const id_artist = await knex("tb_artist")
         .select("id_artist")
+        .whereRaw(`LOWER(artist) LIKE ?`, [`%${artistToLowerCase}%`])
         .orderBy("id_artist", "desc")
         .limit(1);
 
-      await knex("tb_genre").insert({ genre });
-
-      const [{ id_genre }] = await knex("tb_genre")
+      const id_genre = await knex("tb_genre")
         .select("id_genre")
+        .whereRaw(`LOWER(genre) LIKE ?`, [`%${genreToLowerCase}%`])
         .orderBy("id_genre", "desc")
         .limit(1);
 
-      const fk_album = id_album;
-      const fk_artist = id_artist;
-      const fk_genre = id_genre;
+      if (
+        id_album.length == 0 &&
+        id_artist.length == 0 &&
+        id_genre.length == 0
+      ) {
+        await knex("tb_album").insert({ title_album, albumcover });
+        await knex("tb_artist").insert({ artist });
+        await knex("tb_genre").insert({ genre });
 
-      await knex("tb_song").insert({
-        fk_album,
-        fk_artist,
-        fk_genre,
-        lyrics,
-        file,
-        title_song,
-        duration,
-      });
+        const [{ id_album }] = await knex("tb_album")
+          .select("id_album")
+          .orderBy("id_album", "desc")
+          .limit(1);
 
-      return res.status(201).send();
+        const [{ id_artist }] = await knex("tb_artist")
+          .select("id_artist")
+          .orderBy("id_artist", "desc")
+          .limit(1);
+
+        const [{ id_genre }] = await knex("tb_genre")
+          .select("id_genre")
+          .orderBy("id_genre", "desc")
+          .limit(1);
+
+        const fk_album = parseInt(id_album);
+        const fk_artist = parseInt(id_artist);
+        const fk_genre = parseInt(id_genre);
+
+        await knex("tb_song").insert({
+          fk_album,
+          fk_artist,
+          fk_genre,
+          lyrics,
+          file,
+          title_song,
+          duration,
+        });
+        return res.status(201).send();
+      } else {
+        await knex("tb_song").insert({
+          fk_album: parseInt(Object.values(id_album[0])),
+          fk_artist: parseInt(Object.values(id_artist[0])),
+          fk_genre: parseInt(Object.values(id_genre[0])),
+          lyrics,
+          file,
+          title_song,
+          duration,
+        });
+        return res.status(201).send();
+      }
     } catch (error) {
       next(error);
     }
@@ -79,7 +115,7 @@ module.exports = {
     try {
       const { search } = req.params;
 
-      if (genre) {
+      if (search) {
         let value = search.toLowerCase();
         let results = await knex("tb_song")
           .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
@@ -175,6 +211,8 @@ module.exports = {
 
               if (results.length != 0) {
                 return res.json(results);
+              }else{
+                return res.json("Nenhum dado encontrado!");
               }
             }
           }
