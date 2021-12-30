@@ -1,26 +1,58 @@
 const knex = require("../database");
 module.exports = {
   async index(req, res) {
-    const results = await knex("tb_song")
-      .join("tb_album", "tb_album.id_album", "tb_song.fk_album")
-      .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
-      .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
-      .select(
-        "id_song",
-        "fk_album",
-        "fk_artist",
-        "fk_genre",
-        "title_album",
-        "albumcover",
-        "artist",
-        "genre",
-        "lyrics",
-        "file",
-        "title_song",
-        "duration"
-      );
+    const { page } = req.query;
+    if (page) {
+      results = await knex("tb_song")
+        .where("id_song", "=", page)
+        .join("tb_album", "tb_album.id_album", "tb_song.fk_album")
+        .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
+        .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
+        .select(
+          "id_song",
+          "fk_album",
+          "fk_artist",
+          "fk_genre",
+          "title_album",
+          "albumcover",
+          "artist",
+          "genre",
+          "lyrics",
+          "file",
+          "title_song",
+          "duration"
+        );
+      const { fk_album } = results[0];
+      const [count] = await knex("tb_song")
+        .where("fk_album", "=", fk_album)
+        .join("tb_album", "tb_album.id_album", "tb_song.fk_album")
+        .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
+        .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
+        .count();
 
-    return res.json(results);
+      res.header("X-Total-Count", count["count"]);
+      return res.json(results);
+    } else {
+      const results = await knex("tb_song")
+        .join("tb_album", "tb_album.id_album", "tb_song.fk_album")
+        .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
+        .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
+        .select(
+          "id_song",
+          "fk_album",
+          "fk_artist",
+          "fk_genre",
+          "title_album",
+          "albumcover",
+          "artist",
+          "genre",
+          "lyrics",
+          "file",
+          "title_song",
+          "duration"
+        );
+      return res.json(results);
+    }
   },
   async create(req, res, next) {
     try {
@@ -211,7 +243,7 @@ module.exports = {
 
               if (results.length != 0) {
                 return res.json(results);
-              }else{
+              } else {
                 return res.json("Nenhum dado encontrado!");
               }
             }

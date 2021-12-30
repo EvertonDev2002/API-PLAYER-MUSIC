@@ -1,7 +1,13 @@
 const knex = require("../database");
 module.exports = {
   async index(req, res) {
-    const results = await knex("tb_artist").select("id_artist", "artist");
+    const { page = 1 } = req.query;
+    const results = await knex("tb_artist")
+      .select("id_artist", "artist")
+      .limit(5)
+      .offset((page - 1) * 5);
+    const [count] = await knex("tb_artist").count();
+    res.header("X-Total-Count", count["count"]);
     return res.json(results);
   },
   async create(req, res, next) {
