@@ -71,6 +71,7 @@ module.exports = {
         duration,
       } = req.body;
 
+      const FloatDuration = parseFloat(duration);
       const genreToLowerCase = genre.toLowerCase();
       const artistToLowerCase = artist.toLowerCase();
       const titleAlbumToLowerCase = title_album.toLowerCase();
@@ -124,7 +125,7 @@ module.exports = {
           lyrics,
           file,
           title_song,
-          duration,
+          duration: FloatDuration,
         });
 
         return res.status(201).send();
@@ -153,7 +154,7 @@ module.exports = {
           lyrics,
           file,
           title_song,
-          duration,
+          duration: FloatDuration,
         });
 
         return res.status(201).send();
@@ -182,7 +183,7 @@ module.exports = {
           lyrics,
           file,
           title_song,
-          duration,
+          duration: FloatDuration,
         });
         return res.status(201).send();
       } else if (id_genre.length === 0) {
@@ -210,7 +211,7 @@ module.exports = {
           lyrics,
           file,
           title_song,
-          duration,
+          duration: FloatDuration,
         });
         return res.status(201).send();
       } else {
@@ -221,7 +222,7 @@ module.exports = {
           lyrics,
           file,
           title_song,
-          duration,
+          duration: FloatDuration,
         });
         return res.status(201).send();
       }
