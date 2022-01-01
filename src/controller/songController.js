@@ -31,8 +31,7 @@ module.exports = {
           .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
           .count();
 
-        res.header("X-Total-Count", count["count"]);
-        return res.json(results);
+          return res.json([results, count]);
       } else {
         return res.json("Nenhum dado encontrado!");
       }

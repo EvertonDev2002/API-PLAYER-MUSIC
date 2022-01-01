@@ -7,8 +7,7 @@ module.exports = {
       .limit(5)
       .offset((page - 1) * 5);
     const [count] = await knex("tb_artist").count();
-    res.header("X-Total-Count", count["count"]);
-    return res.json(results);
+    return res.json([results, count]);
   },
   async create(req, res, next) {
     try {
