@@ -24,14 +24,15 @@ module.exports = {
         );
       if (results.length != 0) {
         const { fk_album } = results[0];
-        const [count] = await knex("tb_song")
+
+        const album = await knex("tb_song")
           .where("fk_album", "=", fk_album)
           .join("tb_album", "tb_album.id_album", "tb_song.fk_album")
           .join("tb_artist", "tb_artist.id_artist", "tb_song.fk_artist")
           .join("tb_genre", "tb_genre.id_genre", "tb_song.fk_genre")
-          .count();
+          .select("id_song", "title_song", "title_album");
 
-          return res.json([results, count]);
+        return res.json([results, album]);
       } else {
         return res.json("Nenhum dado encontrado!");
       }
